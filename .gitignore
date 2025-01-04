@@ -1,0 +1,19 @@
+# Ignore environment variable files
+.env
+
+# Ignore virtual environment directory
+.venv/
+
+# Ignore compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore log files
+*.log
+
+# Ignore other unnecessary files
+.DS_Store
+*.swp
+*.swo

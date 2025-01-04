@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Selenium Script</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result p {
+            margin: 10px 0;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .json-display {
+            background: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        function runScript() {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+
+            fetch('/run-script')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loader').style.display = 'none';
+                    if (data.error) {
+                        document.getElementById('result').innerText = data.error;
+                    } else {
+                        let trends = JSON.parse(data.data);
+                        let trendsHtml = trends.trends.map((trend, index) => `<p><strong>Trend ${index + 1}:</strong> ${trend}</p>`).join('');
+                        let resultHtml = `
+                            <p>These are the most happening topics as on ${data.message.split('as on ')[1]}</p>
+                            ${trendsHtml}
+                            <p><strong>IP address:</strong> ${data.ip_address}</p>
+                            <p class="json-display">${data.data}</p>
+                        `;
+                        document.getElementById('result').innerHTML = resultHtml;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('result').innerText = 'Error: ' + error;
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Run Selenium Script</h1>
+        <button onclick="runScript()">Click here to run the script</button>
+        <div id="loader" class="loader" style="display:none;"></div>
+        <div id="result" class="result"></div>
+    </div>
+</body>
+</html>

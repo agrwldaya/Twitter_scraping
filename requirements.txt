@@ -1,0 +1,6 @@
+Flask
+selenium
+requests
+pymongo
+python-dotenv
+bson
