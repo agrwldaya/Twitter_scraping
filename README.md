@@ -1,7 +1,7 @@
 # Twitter Trending Topics Scraper
 
 This project automates Twitter login and scrapes trending topics using Selenium, storing the results in MongoDB. It features a Flask web app where users can run the script and view trending topics, IP address, and a JSON extract of the data.
-
+## if sometime it ask for entering email then enter it manually. 
 ## Requirements
 
 - Python 3.x
